@@ -38,3 +38,9 @@ http://localhost:3000/images/deleteThumb
 to delete all the thumbnails 
 
 running http://localhost:3000/ will start a simple UI allowing you to try the endpoint through the API. Hope you enjoy it :)
+this endpoint to upload full image to the folder
+
+http://localhost:3000/images/deleteThumb
+to delete all the thumbnails 
+
+running http://localhost:3000/ will start a simple UI allowing you to try the endpoint through the API. Hope you enjoy it :)
