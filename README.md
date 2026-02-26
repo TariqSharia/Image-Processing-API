@@ -8,9 +8,9 @@ http://localhost:3000/images/thumb
 to return the list of thumbnail images names
 
 http://localhost:3000/images/fullView
-to display the list of full images in UI
+to display the list of full images in simple UI
 http://localhost:3000/images/thumbView
-to display the list of thumbnail images in UI
+to display the list of thumbnail images in simple UI
 
 http://localhost:3000/images/upload
 
