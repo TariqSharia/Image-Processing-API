@@ -40,5 +40,33 @@
       the image processing features.
     </p>
     <%- body %>
+     <div class="card">
+      <h2>Manage Thumbnails</h2>
+      <button id="deleteThumbsBtn" style="background-color: red; margin-top: 10px;">
+        Delete All Thumbnails
+      </button>
+    </div>
+    <script>
+      const deleteBtn = document.getElementById('deleteThumbsBtn');
+
+      deleteBtn.addEventListener('click', async () => {
+       try {
+          const response = await fetch('/images/deleteThumb', { method: 'DELETE' });
+          const result = await response.json();
+
+          if (response.ok) {
+            alert(result.message);
+            // Reload page to reflect changes
+            location.reload();
+          } else {
+            alert('Error: ' + result.message);
+          }
+        } catch (err) {
+          alert('Error: ' + err.message);
+        }
+
+        
+      });
+    </script>
   </body>
 </html>

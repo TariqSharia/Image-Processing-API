@@ -137,4 +137,26 @@ images.post('/upload', (req, res) => {
   });
 });
 
+images.delete('/deleteThumb', (req, res) => {
+  fs.readdir(resolvedThumbPath, (err, files) => {
+    if (err) {
+      return res.status(500).json({
+        message: 'Error reading thumbnail directory',
+        title: 'Image Processing API',
+      });
+    }
+    files.forEach((file) => {
+      fs.unlink(path.join(resolvedThumbPath, file), (err) => {
+        if (err) {
+          console.error(`Error deleting file ${file}:`, err);
+        }
+      });
+    });
+    return res.status(200).json({
+      message: 'All thumbnails deleted successfully',
+      title: 'Image Processing API',
+    });
+  });
+});
+
 export default images;
