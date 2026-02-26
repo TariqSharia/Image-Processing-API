@@ -1,0 +1,51 @@
+{
+  "name": "image-processing-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build": "npx tsc",
+    "jasmine": "jasmine",
+    "test": "npm run build && npm run jasmine",
+    "start": "nodemon src/server.ts",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/ejs": "^3.1.5",
+    "@types/eslint": "^9.6.1",
+    "@types/express": "^5.0.6",
+    "@types/express-ejs-layouts": "^2.5.4",
+    "@types/jasmine": "^6.0.0",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^25.2.2",
+    "@types/sharp": "^0.31.1",
+    "@types/supertest": "^6.0.3",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "gitignore": "^0.7.0",
+    "globals": "^17.3.0",
+    "jasmine": "^6.0.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.1",
+    "supertest": "^7.2.2",
+    "ts-node": "^10.9.2",
+    "typescript-eslint": "^8.56.0"
+  },
+  "dependencies": {
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "express-ejs-layouts": "^2.5.1",
+    "multer": "^2.0.2",
+    "node": "^25.6.0",
+    "sharp": "^0.34.5"
+  }
+}

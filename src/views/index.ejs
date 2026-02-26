@@ -1,0 +1,144 @@
+<style>
+  .card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .previewBox {
+    border: 1px solid #ccc;
+     padding: 10px;
+    max-width: 600px;
+    max-height: 400px;
+    margin: auto;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #previewBox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    function loadImages() {
+      fetch('images/full')
+        .then((response) => response.json())
+        .then((files) => {
+          const images = files.images;
+          const select = document.getElementById('imageSelector');
+          select.innerHTML =
+            '<option value="" disabled selected>Select an image</option>';
+          images.forEach((image) => {
+            const option = document.createElement('option');
+            option.value = image;
+            option.textContent = image;
+            select.appendChild(option);
+          });
+        })
+        .catch((error) => {
+          console.error('Error fetching images:', error);
+        });
+    }
+    loadImages();
+    const form = document.getElementById('resizeImageFrm');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+
+      const result = await fetch('/images?' + new URLSearchParams(formData), {
+        method: 'GET',
+      });
+      const message = await result.json();
+      if (result.ok) {
+        document.getElementById('imagePreview').src = message.imageUrl;
+        document.getElementById('downloadLink').href = message.imageUrl;
+        document.getElementById('imageContainer').style.display = 'block';
+        form.reset();
+      } else {
+        alert('Error: ' + message.message);
+      }
+    });
+    const closeBtn = document.getElementById('closeBtn');
+    closeBtn.addEventListener('click', () => {
+      document.getElementById('imageContainer').style.display = 'none';
+    });
+    const formUpload = document.getElementById('uploadImageFrm');
+    formUpload.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(formUpload);
+
+      const result = await fetch('/images/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const message = await result.json();
+      if (result.ok) {
+        alert(message.message);
+        formUpload.reset();
+        loadImages();
+      } else {
+        alert('Error: ' + message.message);
+      }
+    });
+  });
+  // var message = "<%= typeof message === 'undefined' ? '' : message %>";
+  // if(message || message !== '') {
+  //     alert(message);
+  // }
+</script>
+
+<div class="card">
+  <h2>Resize Image</h2>
+  <form id="resizeImageFrm">
+    <select id="imageSelector" name="filename" placeholder="Filename" required>
+      <option value="" disabled selected>Select an image</option>
+    </select>
+    <input type="number" name="width" placeholder="Width" required />
+    <input type="number" name="height" placeholder="Height" required />
+
+    <select name="format">
+      <option value="jpg">JPG</option>
+      <option value="png">PNG</option>
+      <option value="webp">WEBP</option>
+    </select>
+    <br />
+    <button type="submit">Resize</button>
+  </form>
+  <div id="imageContainer" style="margin-top: 20px; display: none;">
+    <div class="previewBox">
+      <img id="imagePreview"/>
+    </div>
+      <div style="margin-top: 15px">
+        <button>
+          <a id="downloadLink" href="#" style="text-decoration: none; color: white;">Download Image</a>
+        </button>
+        <button id="closeBtn" type="button">Close</button>
+      </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Image List</h2>
+  <form id="viewImagesFrm" method="GET" action="/images/fullView">
+    <button type="submit">View Images</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Thumbnail List</h2>
+  <form id="viewThumbnailsFrm" method="GET" action="/images/thumbView">
+    <button type="submit">View Thumbnails</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Upload Image</h2>
+  <form id="uploadImageFrm" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required />
+    <button type="submit">Upload</button>
+  </form>
+</div>

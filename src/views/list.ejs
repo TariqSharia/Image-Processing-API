@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image List</title>
+</head>
+<body>
+  <h1>Image List</h1>
+  <ul>
+    <% images.forEach(image => { %>
+      <li>
+        <p><strong><%= image.name %></strong></p>
+        <img src="<%= image.url %>" alt="<%= image.name %>" width="200" height="200">
+    </li>
+    <% }); %>
+  </ul>
+</body>
+</html>
