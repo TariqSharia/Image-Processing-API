@@ -47,11 +47,12 @@ images.get('/thumbView', async (req, res) => {
   res.render('list', { title: 'Thumbnails', images: imageList });
 });
 images.get('/', (req, res) => {
-  const { filename, width, height, format } = req.query as {
+  const { filename, width, height, format, source } = req.query as {
     filename?: string;
     width?: string;
     height?: string;
     format?: string;
+    source?: string;
   };
   if (!filename) {
     return res
@@ -82,9 +83,14 @@ images.get('/', (req, res) => {
       `${parsedFilename}_${width}_${height}.${format || 'jpg'}`,
     );
     if (fs.existsSync(thumbFile)) {
-      return res
-        .status(200)
-        .send({ imageUrl: `/images/thumb/${path.basename(thumbFile)}` });
+      if (source !== 'view') {
+        res.type(`image/${format}`);
+        return res.status(200).sendFile(thumbFile);
+      } else {
+        return res
+          .status(200)
+          .json({ imageUrl: `/images/thumb/${path.basename(thumbFile)}` });
+      }
     } else {
       processImage(
         filename,
@@ -93,10 +99,14 @@ images.get('/', (req, res) => {
         format as keyof FormatEnum,
       )
         .then((outputPath) => {
-          // res.type(`image/${format}`);
+          if (source !== 'view') {
+            res.type(`image/${format}`);
+            return res.status(200).sendFile(outputPath);
+          } else {
           return res
             .status(200)
-            .send({ imageUrl: `/images/thumb/${path.basename(outputPath)}` });
+            .json({ imageUrl: `/images/thumb/${path.basename(outputPath)}` });
+          }
         })
         .catch((err) => {
           return res.status(500).send(err.message);
